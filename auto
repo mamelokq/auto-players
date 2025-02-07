@@ -13,6 +13,25 @@ local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local LocalPlayer = Players.LocalPlayer
 
+local player = game.Players.LocalPlayer
+
+local function selectFirstTool()
+    local backpack = player:FindFirstChild("Backpack")
+    if backpack then
+        task.wait(5) -- Wait 5 seconds before selecting the tool
+        local firstTool = backpack:FindFirstChildOfClass("Tool") -- Get the first tool in the inventory
+        if firstTool then
+            firstTool.Parent = player.Character -- Move it to the character to equip it
+        end
+    end
+end
+
+-- Run when the player spawns or respawns
+player.CharacterAdded:Connect(function()
+    selectFirstTool()
+end)
+
+
 local function floatUnderPlayer(targetPlayer)
     local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
     if targetPlayer and targetPlayer.Character and targetPlayer.Character:FindFirstChild("HumanoidRootPart") then
