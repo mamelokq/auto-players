@@ -40,7 +40,7 @@ local function floatUnderPlayer(targetPlayer)
         if hrp then
             spawn(function()
                 for i = 1, 40 do -- Update position frequently for 2 seconds (40 times at 0.05s intervals)
-                    hrp.CFrame = targetHRP.CFrame * CFrame.new(0, -10, 0) -- Move further underneath
+                    hrp.CFrame = targetHRP.CFrame * CFrame.new(0, -15, 0) -- Move further underneath
                     wait(0.05)
                 end
             end)
