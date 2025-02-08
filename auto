@@ -16,17 +16,24 @@ local LocalPlayer = Players.LocalPlayer
 local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
 local hrp = Character:WaitForChild("HumanoidRootPart")
 
-local targetPlayer = nil -- Keeps track of the current target
+local targetPlayer = nil -- Current player to follow
 
--- Function to update position smoothly
+-- Function to smoothly follow under a player
 local function followUnderPlayer()
     RunService.RenderStepped:Connect(function()
-        if targetPlayer and targetPlayer.Character and targetPlayer.Character:FindFirstChild("HumanoidRootPart") then
+        if targetPlayer and targetPlayer.Character and targetPlayer.Character:FindFirstChild("HumanoidRootPart") and hrp then
             local targetHRP = targetPlayer.Character.HumanoidRootPart
-            -- Constantly set position under them at -15 Y offset
+            -- Keep position directly below target at -15 on Y-axis
             hrp.CFrame = targetHRP.CFrame * CFrame.new(0, -15, 0)
         end
     end)
+end
+
+-- Function to update the local player's character (handles respawn)
+local function onCharacterAdded(newCharacter)
+    Character = newCharacter
+    hrp = Character:WaitForChild("HumanoidRootPart") -- Get new HumanoidRootPart
+    followUnderPlayer() -- Restart floating under player
 end
 
 -- Loop through players and update target every 2 seconds
@@ -35,28 +42,14 @@ spawn(function()
         for _, player in pairs(Players:GetPlayers()) do
             if player ~= LocalPlayer then
                 targetPlayer = player
-                wait(2) -- Switch players every 2 seconds
+                wait(2) -- Switch player every 2 seconds
             end
         end
     end
 end)
 
--- Start following
+-- Listen for respawns and update character
+LocalPlayer.CharacterAdded:Connect(onCharacterAdded)
+
+-- Start following under players
 followUnderPlayer()
-CharacterAdded:Wait()
-            for _, player in pairs(Players:GetPlayers()) do
-                if player ~= LocalPlayer then
-                    floatUnderPlayer(player)
-                    wait(2) -- Wait 2 seconds before switching
-                end
-            end
-        end
-    end)
-end
-
-LocalPlayer.CharacterAdded:Connect(function()
-    wait(1) -- Small delay to ensure character is fully loaded
-    startFloatingLoop()
-end)
-
-startFloatingLoop()
