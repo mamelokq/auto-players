@@ -1,8 +1,49 @@
 loadstring(game:HttpGet("https://raw.githubusercontent.com/mamelokq/clutch-ware/refs/heads/main/script"))()
 loadstring(game:HttpGet("https://raw.githubusercontent.com/faisal31312/elemental/refs/heads/main/elemental"))()
 
-local Players = game:GetService("Players")
 
+local function makeEverythingInvisible()
+    -- Loop through all objects and make them invisible
+    for _, obj in pairs(workspace:GetDescendants()) do
+        if obj:IsA("BasePart") then
+            obj.Transparency = 1  -- Make the part invisible
+            obj.CanCollide = false  -- Prevent collision with invisible parts
+        end
+    end
+
+    -- Ensure your character stays visible
+    local character = game.Players.LocalPlayer.Character
+    if character then
+        for _, part in pairs(character:GetChildren()) do
+            if part:IsA("BasePart") then
+                part.Transparency = 0  -- Keep your character visible
+                part.CanCollide = true  -- Ensure your character can collide
+            end
+        end
+    end
+
+    -- Make sure other players' characters stay visible
+    game.Players.PlayerAdded:Connect(function(player)
+        player.CharacterAdded:Connect(function(character)
+            if player ~= game.Players.LocalPlayer then
+                for _, part in pairs(character:GetChildren()) do
+                    if part:IsA("BasePart") then
+                        part.Transparency = 0  -- Keep other players' characters visible
+                        part.CanCollide = true  -- Ensure collision for other players
+                    end
+                end
+            end
+        end)
+    end)
+
+    print("[💨 Everything Invisible | Players Visible]")
+end
+
+makeEverythingInvisible()
+
+
+
+local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 
 -- Function to open the first item in the player's inventory
