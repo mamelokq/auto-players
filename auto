@@ -2,6 +2,31 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/mamelokq/clutch-ware/
 loadstring(game:HttpGet("https://raw.githubusercontent.com/faisal31312/elemental/refs/heads/main/elemental"))()
 
 local Players = game:GetService("Players")
+
+local LocalPlayer = Players.LocalPlayer
+
+-- Function to open the first item in the player's inventory
+local function openFirstItem()
+    local backpack = LocalPlayer:FindFirstChild("Backpack")
+    if backpack then
+        local firstItem = backpack:GetChildren()[1] -- Get the first item
+        if firstItem and firstItem:IsA("Tool") then
+            LocalPlayer.Character.Humanoid:EquipTool(firstItem) -- Equip it
+        end
+    end
+end
+
+-- Function to handle respawn event
+local function onCharacterAdded()
+    task.wait(3) -- Wait 3 seconds after spawning
+    openFirstItem() -- Open the first item in inventory
+end
+
+-- Listen for respawn and trigger the function
+LocalPlayer.CharacterAdded:Connect(onCharacterAdded)
+
+
+local Players = game:GetService("Players")
 local player = Players.LocalPlayer
 
 if player and player.Character then
