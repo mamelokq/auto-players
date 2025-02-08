@@ -119,3 +119,30 @@ LocalPlayer.CharacterAdded:Connect(onCharacterAdded)
 
 -- Start following under players
 followUnderPlayer()
+
+local VirtualInputManager = game:GetService("VirtualInputManager")
+local RunService = game:GetService("RunService")
+local Player = game.Players.LocalPlayer
+
+local function pressRKey()
+    while true do
+        VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.R, false, game) -- Press R
+        wait(0.1)
+        VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.R, false, game) -- Release R
+        wait(12) -- Wait 5 seconds before pressing again
+    end
+end
+
+-- Function to start the loop even after resetting
+local function startAutoKeyPresser()
+    task.spawn(pressRKey) -- Start pressing R every 5 seconds
+end
+
+-- Start when script runs
+startAutoKeyPresser()
+
+-- Restart when you respawn
+Player.CharacterAdded:Connect(function()
+    startAutoKeyPresser()
+end)
+
