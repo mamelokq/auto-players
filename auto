@@ -11,47 +11,39 @@ end
 
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
+
 local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+local hrp = Character:WaitForChild("HumanoidRootPart")
 
-local player = game.Players.LocalPlayer
+local targetPlayer = nil -- Keeps track of the current target
 
-local function selectFirstTool()
-    local backpack = player:FindFirstChild("Backpack")
-    if backpack then
-        task.wait(5) -- Wait 5 seconds before selecting the tool
-        local firstTool = backpack:FindFirstChildOfClass("Tool") -- Get the first tool in the inventory
-        if firstTool then
-            firstTool.Parent = player.Character -- Move it to the character to equip it
+-- Function to update position smoothly
+local function followUnderPlayer()
+    RunService.RenderStepped:Connect(function()
+        if targetPlayer and targetPlayer.Character and targetPlayer.Character:FindFirstChild("HumanoidRootPart") then
+            local targetHRP = targetPlayer.Character.HumanoidRootPart
+            -- Constantly set position under them at -15 Y offset
+            hrp.CFrame = targetHRP.CFrame * CFrame.new(0, -15, 0)
         end
-    end
+    end)
 end
 
--- Run when the player spawns or respawns
-player.CharacterAdded:Connect(function()
-    selectFirstTool()
+-- Loop through players and update target every 2 seconds
+spawn(function()
+    while true do
+        for _, player in pairs(Players:GetPlayers()) do
+            if player ~= LocalPlayer then
+                targetPlayer = player
+                wait(2) -- Switch players every 2 seconds
+            end
+        end
+    end
 end)
 
-
-local function floatUnderPlayer(targetPlayer)
-    local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
-    if targetPlayer and targetPlayer.Character and targetPlayer.Character:FindFirstChild("HumanoidRootPart") then
-        local targetHRP = targetPlayer.Character.HumanoidRootPart
-        local hrp = Character:FindFirstChild("HumanoidRootPart")
-        if hrp then
-            spawn(function()
-                for i = 1, 40 do -- Update position frequently for 2 seconds (40 times at 0.05s intervals)
-                    hrp.CFrame = targetHRP.CFrame * CFrame.new(0, -15, 0) -- Move further underneath
-                    wait(0.05)
-                end
-            end)
-        end
-    end
-end
-
-local function startFloatingLoop()
-    spawn(function()
-        while true do
-            local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+-- Start following
+followUnderPlayer()
+CharacterAdded:Wait()
             for _, player in pairs(Players:GetPlayers()) do
                 if player ~= LocalPlayer then
                     floatUnderPlayer(player)
