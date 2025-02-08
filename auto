@@ -108,7 +108,7 @@ spawn(function()
         for _, player in pairs(Players:GetPlayers()) do
             if player ~= LocalPlayer then
                 targetPlayer = player
-                wait(2) -- Switch player every 2 seconds
+                wait(1) -- Switch player every 2 seconds
             end
         end
     end
