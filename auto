@@ -1,6 +1,42 @@
-loadstring(game:HttpGet("https://raw.githubusercontent.com/flanchhh/AntiV2/refs/heads/main/Anti%20v2.lua"))();
-loadstring(game:HttpGet("https://raw.githubusercontent.com/faisal31312/elemental/refs/heads/main/elemental"))()
+local player = game.Players.LocalPlayer
 
+local function onCharacterAdded(character)
+    local humanoid = character:FindFirstChildOfClass("Humanoid")
+    if humanoid then
+        humanoid.Died:Connect(function()
+            task.wait(4) -- Wait 4 seconds after death
+            game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.R, false, nil)
+            task.wait(0.1) -- Simulate key press duration
+            game:GetService("VirtualInputManager"):SendKeyEvent(false, Enum.KeyCode.R, false, nil)
+        end)
+    end
+end
+
+if player.Character then
+    onCharacterAdded(player.Character)
+end
+player.CharacterAdded:Connect(onCharacterAdded)
+
+
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+
+-- Function to open the first item in the player's inventory
+local function openFirstItem()
+    local backpack = LocalPlayer:FindFirstChild("Backpack")
+    if backpack then
+        local firstItem = backpack:GetChildren()[1] -- Get the first item
+        if firstItem and firstItem:IsA("Tool") then
+            LocalPlayer.Character.Humanoid:EquipTool(firstItem) -- Equip it
+        end
+    end
+end
+
+-- Function to handle respawn event
+local function onCharacterAdded()
+    task.wait(3) -- Wait 3 seconds after spawning
+    openFirstItem() -- Open the first item in inventory
+end
 
 
 enabled = true --chat "/spy" to toggle!
@@ -280,46 +316,6 @@ end
 
 makeEverythingInvisible()
 
-local player = game.Players.LocalPlayer
-
-local function onCharacterAdded(character)
-    local humanoid = character:FindFirstChildOfClass("Humanoid")
-    if humanoid then
-        humanoid.Died:Connect(function()
-            task.wait(4) -- Wait 4 seconds after death
-            game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.R, false, nil)
-            task.wait(0.1) -- Simulate key press duration
-            game:GetService("VirtualInputManager"):SendKeyEvent(false, Enum.KeyCode.R, false, nil)
-        end)
-    end
-end
-
-if player.Character then
-    onCharacterAdded(player.Character)
-end
-player.CharacterAdded:Connect(onCharacterAdded)
-
-
-local Players = game:GetService("Players")
-local LocalPlayer = Players.LocalPlayer
-
--- Function to open the first item in the player's inventory
-local function openFirstItem()
-    local backpack = LocalPlayer:FindFirstChild("Backpack")
-    if backpack then
-        local firstItem = backpack:GetChildren()[1] -- Get the first item
-        if firstItem and firstItem:IsA("Tool") then
-            LocalPlayer.Character.Humanoid:EquipTool(firstItem) -- Equip it
-        end
-    end
-end
-
--- Function to handle respawn event
-local function onCharacterAdded()
-    task.wait(3) -- Wait 3 seconds after spawning
-    openFirstItem() -- Open the first item in inventory
-end
-
 -- Listen for respawn and trigger the function
 LocalPlayer.CharacterAdded:Connect(onCharacterAdded)
 
@@ -402,3 +398,5 @@ startAutoKeyPresser()
 Player.CharacterAdded:Connect(function()
     startAutoKeyPresser()
 end)
+
+loadstring(game:HttpGet("https://raw.githubusercontent.com/faisal31312/elemental/refs/heads/main/elemental"))()
