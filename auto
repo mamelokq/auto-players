@@ -14,7 +14,8 @@ end
 
 -- Function to handle respawn event
 local function onCharacterAdded(character)
-    task.wait(2) -- Wait 3 seconds after spawning
+    character:WaitForChild("HumanoidRootPart") -- Wait until the character is fully loaded
+    task.wait(2) -- Wait 2 seconds after respawn
     openFirstItem() -- Open the first item in inventory
 end
 
@@ -24,6 +25,7 @@ if LocalPlayer.Character then
 end
 
 LocalPlayer.CharacterAdded:Connect(onCharacterAdded)
+
 
 
 local player = game.Players.LocalPlayer
