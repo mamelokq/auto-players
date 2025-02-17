@@ -20,23 +20,25 @@ end
 
 -- Listen for respawn and trigger the function
 LocalPlayer.CharacterAdded:Connect(onCharacterAdded)
-
 local player = game.Players.LocalPlayer
 
 local function onCharacterAdded(character)
-    -- Wait a bit for the character to fully load
-    task.wait(2)
-
-    -- Simulate pressing the "R" key
-    game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.R, false, nil)
-    task.wait(0.1) -- Wait briefly to simulate key press duration
-    game:GetService("VirtualInputManager"):SendKeyEvent(false, Enum.KeyCode.R, false, nil)
+    local humanoid = character:FindFirstChildOfClass("Humanoid")
+    if humanoid then
+        humanoid.Died:Connect(function()
+            task.wait(2) -- Wait 4 seconds after death
+            game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.R, false, nil)
+            task.wait(0.1) -- Simulate key press duration
+            game:GetService("VirtualInputManager"):SendKeyEvent(false, Enum.KeyCode.R, false, nil)
+        end)
+    end
 end
 
--- Call the function for the current character if it exists
 if player.Character then
     onCharacterAdded(player.Character)
 end
+player.CharacterAdded:Connect(onCharacterAdded)
+
 
 -- Connect the function to the CharacterAdded event to handle respawn
 player.CharacterAdded:Connect(onCharacterAdded)
