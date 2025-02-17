@@ -13,20 +13,13 @@ local function openFirstItem()
 end
 
 -- Function to handle respawn event
-local function onCharacterAdded(character)
-    character:WaitForChild("HumanoidRootPart") -- Wait until the character is fully loaded
-    task.wait(2) -- Wait 2 seconds after respawn
+local function onCharacterAdded()
+    task.wait(2) -- Wait 3 seconds after spawning
     openFirstItem() -- Open the first item in inventory
 end
 
--- Check if the player already has a character and connect the event
-if LocalPlayer.Character then
-    onCharacterAdded(LocalPlayer.Character)
-end
-
+-- Listen for respawn and trigger the function
 LocalPlayer.CharacterAdded:Connect(onCharacterAdded)
-
-
 
 local player = game.Players.LocalPlayer
 
