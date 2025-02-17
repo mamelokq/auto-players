@@ -39,10 +39,6 @@ if player.Character then
 end
 player.CharacterAdded:Connect(onCharacterAdded)
 
-
--- Connect the function to the CharacterAdded event to handle respawn
-player.CharacterAdded:Connect(onCharacterAdded)
-
 enabled = true --chat "/spy" to toggle!
 spyOnMyself = true --if true will check your messages too
 public = false --if true will chat the logs publicly (fun, risky)
