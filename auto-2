@@ -10,7 +10,7 @@ local function onCharacterAdded(character)
     task.wait(0.05) -- Slightly shorter key press duration
     VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.One, false, nil)
 
-    task.wait(0.3) -- Wait before pressing "R" for a snappier feel
+    task.wait(0.1) -- Wait before pressing "R" for a snappier feel
 
     -- Press "R" to reload
     VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.R, false, nil)
