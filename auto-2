@@ -1,18 +1,16 @@
-loadstring(game:HttpGet("https://raw.githubusercontent.com/mamelokq/auto-players/refs/heads/main/auto"))()
-
 local Players = game:GetService("Players")
 local VirtualInputManager = game:GetService("VirtualInputManager")
 local LocalPlayer = Players.LocalPlayer
 
 local function onCharacterAdded(character)
-    task.wait(2) -- Reduced initial wait to make the sequence feel smoother
+    task.wait(1) -- Wait before the actions start
 
     -- Press "1" to select the first inventory item
     VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.One, false, nil)
     task.wait(0.05) -- Slightly shorter key press duration
     VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.One, false, nil)
 
-   task.wait(1) -- Reduced wait before pressing "R" for a snappier feel
+    task.wait(0.3) -- Wait before pressing "R" for a snappier feel
 
     -- Press "R" to reload
     VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.R, false, nil)
@@ -22,3 +20,9 @@ end
 
 -- Listen for new characters being added
 LocalPlayer.CharacterAdded:Connect(onCharacterAdded)
+
+-- Wait 2 seconds before executing loadstring
+task.wait(2) -- Wait for 2 seconds before loading the next part
+
+-- Load and execute the script from the URL
+loadstring(game:HttpGet("https://raw.githubusercontent.com/mamelokq/auto-players/refs/heads/main/auto"))()
