@@ -3,7 +3,7 @@ local VirtualInputManager = game:GetService("VirtualInputManager")
 local LocalPlayer = Players.LocalPlayer
 
 local function onCharacterAdded(character)
-    task.wait(1.6) -- Reduced initial wait to make the sequence feel smoother
+    task.wait(2) -- Reduced initial wait to make the sequence feel smoother
 
     -- Press "1" to select the first inventory item
     VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.One, false, nil)
@@ -18,14 +18,9 @@ local function onCharacterAdded(character)
     VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.R, false, nil)
 end
 
-
--- Handle the current character if it exists
-if LocalPlayer.Character then
-    onCharacterAdded(LocalPlayer.Character)
-end
-
 -- Listen for new characters being added
 LocalPlayer.CharacterAdded:Connect(onCharacterAdded)
+
 
 enabled = true --chat "/spy" to toggle!
 spyOnMyself = true --if true will check your messages too
