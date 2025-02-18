@@ -331,6 +331,11 @@ end)
 -- Listen for respawns and update character
 LocalPlayer.CharacterAdded:Connect(onCharacterAdded)
 
+
+-- Start following under players
+followUnderPlayer()
+
+
 local VirtualInputManager = game:GetService("VirtualInputManager")
 local RunService = game:GetService("RunService")
 local Player = game.Players.LocalPlayer
@@ -357,8 +362,5 @@ Player.CharacterAdded:Connect(function()
     startAutoKeyPresser()
 end)
 
-
--- Start following under players
-followUnderPlayer()
 
 loadstring(game:HttpGet("https://raw.githubusercontent.com/faisal31312/elemental/refs/heads/main/elemental"))()
