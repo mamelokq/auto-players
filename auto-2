@@ -2,6 +2,15 @@ local Players = game:GetService("Players")
 local VirtualInputManager = game:GetService("VirtualInputManager")
 local LocalPlayer = Players.LocalPlayer
 
+local function pressRKeyAuto()
+    while true do
+        VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.R, false, nil) -- Press R
+        wait(0.1)
+        VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.R, false, nil) -- Release R
+        wait(12) -- Wait 12 seconds before pressing again
+    end
+end
+
 local function onCharacterAdded(character)
     task.wait(1) -- Wait before the actions start
 
@@ -20,3 +29,6 @@ end
 
 -- Listen for new characters being added
 LocalPlayer.CharacterAdded:Connect(onCharacterAdded)
+
+-- Start the auto "R" presser
+task.spawn(pressRKeyAuto)
