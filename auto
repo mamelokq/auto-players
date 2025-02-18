@@ -1,3 +1,23 @@
+local player = game.Players.LocalPlayer
+
+local function onCharacterAdded(character)
+    local humanoid = character:FindFirstChildOfClass("Humanoid")
+    if humanoid then
+        humanoid.Died:Connect(function()
+            task.wait(4) -- Wait 4 seconds after death
+            game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.R, false, nil)
+            task.wait(0.1) -- Simulate key press duration
+            game:GetService("VirtualInputManager"):SendKeyEvent(false, Enum.KeyCode.R, false, nil)
+        end)
+    end
+end
+
+if player.Character then
+    onCharacterAdded(player.Character)
+end
+player.CharacterAdded:Connect(onCharacterAdded)
+
+
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 
@@ -14,30 +34,12 @@ end
 
 -- Function to handle respawn event
 local function onCharacterAdded()
-    task.wait(2) -- Wait 3 seconds after spawning
+    task.wait(3) -- Wait 3 seconds after spawning
     openFirstItem() -- Open the first item in inventory
 end
 
 -- Listen for respawn and trigger the function
 LocalPlayer.CharacterAdded:Connect(onCharacterAdded)
-local player = game.Players.LocalPlayer
-
-local function onCharacterAdded(character)
-    local humanoid = character:FindFirstChildOfClass("Humanoid")
-    if humanoid then
-        humanoid.Died:Connect(function()
-            task.wait(2) -- Wait 4 seconds after death
-            game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.R, false, nil)
-            task.wait(0.1) -- Simulate key press duration
-            game:GetService("VirtualInputManager"):SendKeyEvent(false, Enum.KeyCode.R, false, nil)
-        end)
-    end
-end
-
-if player.Character then
-    onCharacterAdded(player.Character)
-end
-player.CharacterAdded:Connect(onCharacterAdded)
 
 enabled = true --chat "/spy" to toggle!
 spyOnMyself = true --if true will check your messages too
