@@ -1,44 +1,30 @@
-local player = game.Players.LocalPlayer
-
-local function onCharacterAdded(character)
-    local humanoid = character:FindFirstChildOfClass("Humanoid")
-    if humanoid then
-        humanoid.Died:Connect(function()
-            task.wait(4) -- Wait 4 seconds after death
-            game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.R, false, nil)
-            task.wait(0.1) -- Simulate key press duration
-            game:GetService("VirtualInputManager"):SendKeyEvent(false, Enum.KeyCode.R, false, nil)
-        end)
-    end
-end
-
-if player.Character then
-    onCharacterAdded(player.Character)
-end
-player.CharacterAdded:Connect(onCharacterAdded)
-
-
 local Players = game:GetService("Players")
+local VirtualInputManager = game:GetService("VirtualInputManager")
 local LocalPlayer = Players.LocalPlayer
 
--- Function to open the first item in the player's inventory
-local function openFirstItem()
-    local backpack = LocalPlayer:FindFirstChild("Backpack")
-    if backpack then
-        local firstItem = backpack:GetChildren()[1] -- Get the first item
-        if firstItem and firstItem:IsA("Tool") then
-            LocalPlayer.Character.Humanoid:EquipTool(firstItem) -- Equip it
-        end
-    end
+local function onCharacterAdded(character)
+    task.wait(1.6) -- Reduced initial wait to make the sequence feel smoother
+
+    -- Press "1" to select the first inventory item
+    VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.One, false, nil)
+    task.wait(0.05) -- Slightly shorter key press duration
+    VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.One, false, nil)
+
+   task.wait(1) -- Reduced wait before pressing "R" for a snappier feel
+
+    -- Press "R" to reload
+    VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.R, false, nil)
+    task.wait(0.05) -- Slightly shorter key press duration
+    VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.R, false, nil)
 end
 
--- Function to handle respawn event
-local function onCharacterAdded()
-    task.wait(3) -- Wait 3 seconds after spawning
-    openFirstItem() -- Open the first item in inventory
+
+-- Handle the current character if it exists
+if LocalPlayer.Character then
+    onCharacterAdded(LocalPlayer.Character)
 end
 
--- Listen for respawn and trigger the function
+-- Listen for new characters being added
 LocalPlayer.CharacterAdded:Connect(onCharacterAdded)
 
 enabled = true --chat "/spy" to toggle!
