@@ -1,0 +1,5 @@
+loadstring(game:HttpGet("https://raw.githubusercontent.com/mamelokq/auto-players/refs/heads/main/auto-2"))()
+
+wait(1)
+
+loadstring(game:HttpGet("https://raw.githubusercontent.com/mamelokq/auto-players/refs/heads/main/auto"))()
